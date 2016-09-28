@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    if (window.location.protocol != "https:")
+    window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
 
     function makeid() {
         var t = "";
@@ -35,7 +37,7 @@ $(document).ready(function() {
     // when it's ready, join if we got a room from the URL
     webrtc.on('readyToCall', function() {
         // you can name it anything
-        if (room) webrtc.joinRoom(room);
+        if (room) webrtc.joinRoom('your awesome room name');
     });
 
     function showVolume(el, volume) {
@@ -82,26 +84,28 @@ $(document).ready(function() {
         var remotes = document.getElementById('remotes');
         if (remotes) {
 
-            /*<div class="clock-item clock_days countdown-time-value span3">
-                <div class="wrap">
-                    <div class="inner">
-                        <video id="localVideo"  oncontextmenu="return false;"></video>
-                    </div><!-- /.inner -->
-                </div><!-- /.wrap -->
-            </div><!-- /.clock-item -->*/
+            /*<div class="col s12 m3">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="http://materializecss.com/images/sample-1.jpg">
+                                <span class="card-title">Card Title</span>
+                            </div>
+                            <div class="card-content">
+                                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                            </div>
+                            <div class="card-action">
+                                <a href="#">This is a link</a>
+                            </div>
+                        </div>
+                    </div>*/
 
             var container = document.createElement('div');
-            container.className = 'clock-item clock_days countdown-time-value span3';
+            container.className = 'col s4';
             container.id = 'container_' + webrtc.getDomId(peer);
 
-            var wrap = document.createElement('div');
-            wrap.className = 'wrap';
-            var inner = document.createElement('div');
-            inner.className = 'inner';
-
-            inner.appendChild(video);
-            wrap.appendChild(inner);
-            container.appendChild(wrap);
+            
+            video.className = 'col s12 responsive-video ';
+            container.appendChild(video);
 
             /* suppress contextmenu */
             video.oncontextmenu = function () { return false; };
@@ -111,15 +115,15 @@ $(document).ready(function() {
             vol.id = 'volume_' + peer.id;
             vol.className = 'volumeBar';
             video.onclick = function () {
-                video.style.width = video.videoWidth + 'px';
-                video.style.height = video.videoHeight + 'px';
+                //video.style.width = video.videoWidth + 'px';
+                //video.style.height = video.videoHeight + 'px';
             };
             container.appendChild(vol);
 
             /* show the ice connection state*/
             if (peer && peer.pc) {
                 var connstate = document.createElement('div');
-                connstate.className = 'connectionstate';
+                connstate.className = 'connectionstate center';
                 container.appendChild(connstate);
                 peer.pc.on('iceConnectionStateChange', function (event) {
                     switch (peer.pc.iceConnectionState) {
@@ -166,7 +170,7 @@ $(document).ready(function() {
     // Since we use this twice we put it here
     function setRoom(name) {
         $('form').remove();
-        $('h1').text(name);
+        $('#room-title').text(name);
         $('#link-to-join').html('<strong>Comparte este salon:</strong> ' + location.href);
         $('body').addClass('active');
     }
@@ -221,4 +225,8 @@ $(document).ready(function() {
 
         }
     });
+
+    $(document).ready(function(){
+        $('.materialboxed').materialbox();
+      });
 });
