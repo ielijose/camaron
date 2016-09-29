@@ -37,7 +37,11 @@ $(document).ready(function() {
     // when it's ready, join if we got a room from the URL
     webrtc.on('readyToCall', function() {
         // you can name it anything
-        if (room) webrtc.joinRoom('your awesome room name');
+        if (!room){
+            room = 'your awesome room name';
+        } 
+
+        webrtc.joinRoom(room);
     });
 
     function showVolume(el, volume) {
